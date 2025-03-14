@@ -54,11 +54,11 @@ I want an overview of FTA works, and details on its API as needed, though that m
 
 I'll review the FTA project from both its official website and GitHub repository, focusing on how it works, its API, and any details relevant to integrating it into an ESLint plugin for TypeScript. I'll also check for examples of usage and integrations with other tools, particularly any TypeScript-related ones. Additionally, I'll analyze the discussion in issue #193 on the GitHub repository to see if it provides insights that might be useful for your plugin development. I'll get back to you with a structured summary of my findings.
 
-# Plugin generated-create-eslint-plugin-instructions
+# Plugin
 
 Generated document is in ./generated-plugin.md
 
-## Anthony's Original Prompt
+## Anthony's Original Prompt (Attached: ./generated-create-eslint-plugin-instructions.md & ./generated-fta-background.md)
 
 Looking at these 2 documents, I want you to generate an ESLint plugin for me. Before we begin though, ask me some questions how to proceed with generating the plugin where you have to make choices (specifically opinionated) and might need subjective input.
 
