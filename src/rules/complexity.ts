@@ -88,8 +88,7 @@ export default ESLintUtils.RuleCreator(
             return;
           }
 
-          const sourceCode = context.getSourceCode();
-          const firstToken = sourceCode.getFirstToken(node);
+          const firstToken = context.sourceCode.getFirstToken(node);
           if (!firstToken) {
             return;
           }
