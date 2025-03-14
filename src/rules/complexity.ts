@@ -2,10 +2,10 @@ import { TSESTree, ESLintUtils } from "@typescript-eslint/utils";
 import { runFta } from "fta-cli";
 import * as path from "node:path";
 
-type Options = [
+type Options = readonly [
   {
-    warningThreshold?: number;
-    errorThreshold?: number;
+    warningThreshold: number;
+    errorThreshold: number;
   },
 ];
 
@@ -45,11 +45,15 @@ export default ESLintUtils.RuleCreator(
     ],
     // No fixable property as autofix is not provided
   },
-  defaultOptions: [{}],
-  create(context, [options]) {
-    const warningThreshold =
-      options.warningThreshold ?? DEFAULT_WARNING_THRESHOLD;
-    const errorThreshold = options.errorThreshold ?? DEFAULT_ERROR_THRESHOLD;
+  defaultOptions: [
+    {
+      warningThreshold: DEFAULT_WARNING_THRESHOLD,
+      errorThreshold: DEFAULT_ERROR_THRESHOLD,
+    },
+  ],
+  create(context, [options]: Options) {
+    const warningThreshold = options.warningThreshold;
+    const errorThreshold = options.errorThreshold;
     const filename = context.getFilename();
 
     // Skip virtual files (e.g. "<input>")
