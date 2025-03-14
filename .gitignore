@@ -1,2 +1,4 @@
 # Aider (AI coding tool) wanted these ignored
 .aider*
+
+node_modules
