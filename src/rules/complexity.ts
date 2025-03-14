@@ -14,8 +14,8 @@ const MESSAGE_IDS = {
   COMPLEXITY_ERROR: "complexityError",
 } as const;
 
-const DEFAULT_WARNING_THRESHOLD = 60;
-const DEFAULT_ERROR_THRESHOLD = 80;
+const DEFAULT_WARNING_THRESHOLD = 50;
+const DEFAULT_ERROR_THRESHOLD = 60;
 
 export default ESLintUtils.RuleCreator(
   (name) => `https://example.com/rule/${name}`,
