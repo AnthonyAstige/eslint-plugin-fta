@@ -54,7 +54,7 @@ export default ESLintUtils.RuleCreator(
   create(context, [options]: Options) {
     const warningThreshold = options.warningThreshold;
     const errorThreshold = options.errorThreshold;
-    const filename = context.getFilename();
+    const filename = context.filename;
 
     // Skip virtual files (e.g. "<input>")
     if (filename === "<input>") {
