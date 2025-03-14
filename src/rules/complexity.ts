@@ -1,6 +1,6 @@
 import { TSESTree, ESLintUtils } from "@typescript-eslint/utils";
 import { runFta } from "fta-cli";
-import * as path from "path";
+import * as path from "node:path";
 
 type Options = [
   {
