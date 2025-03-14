@@ -14,8 +14,6 @@ const MESSAGE_IDS = {
   COMPLEXITY_ERROR: "complexityError",
 } as const;
 
-type MessageIds = typeof MESSAGE_IDS[keyof typeof MESSAGE_IDS];
-
 const DEFAULT_WARNING_THRESHOLD = 60;
 const DEFAULT_ERROR_THRESHOLD = 80;
 
