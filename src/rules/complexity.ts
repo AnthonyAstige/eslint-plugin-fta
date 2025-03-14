@@ -9,7 +9,12 @@ type Options = readonly [
   },
 ];
 
-type MessageIds = "complexityWarning" | "complexityError";
+const MESSAGE_IDS = {
+  COMPLEXITY_WARNING: "complexityWarning",
+  COMPLEXITY_ERROR: "complexityError",
+} as const;
+
+type MessageIds = typeof MESSAGE_IDS[keyof typeof MESSAGE_IDS];
 
 const DEFAULT_WARNING_THRESHOLD = 60;
 const DEFAULT_ERROR_THRESHOLD = 80;
@@ -24,9 +29,9 @@ export default ESLintUtils.RuleCreator(
       description: "Enforce FTA-based file complexity limits",
     },
     messages: {
-      complexityWarning:
+      [MESSAGE_IDS.COMPLEXITY_WARNING]:
         "FTA complexity score ({{score}}) exceeds the warning threshold ({{threshold}}). Consider refactoring.",
-      complexityError:
+      [MESSAGE_IDS.COMPLEXITY_ERROR]:
         "FTA complexity score ({{score}}) exceeds the error threshold ({{threshold}}). File is too complex.",
     },
     schema: [
@@ -98,7 +103,7 @@ export default ESLintUtils.RuleCreator(
           if (score >= errorThreshold) {
             context.report({
               node: firstToken,
-              messageId: "complexityError",
+              messageId: MESSAGE_IDS.COMPLEXITY_ERROR,
               data: {
                 score,
                 threshold: errorThreshold,
@@ -107,7 +112,7 @@ export default ESLintUtils.RuleCreator(
           } else {
             context.report({
               node: firstToken,
-              messageId: "complexityWarning",
+              messageId: MESSAGE_IDS.COMPLEXITY_WARNING,
               data: {
                 score,
                 threshold: warningThreshold,
