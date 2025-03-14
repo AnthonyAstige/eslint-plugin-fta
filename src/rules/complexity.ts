@@ -22,7 +22,6 @@ export default ESLintUtils.RuleCreator(
     type: "suggestion",
     docs: {
       description: "Enforce FTA-based file complexity limits",
-      recommended: false,
     },
     messages: {
       complexityWarning:
