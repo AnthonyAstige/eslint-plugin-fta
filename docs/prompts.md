@@ -53,3 +53,37 @@ I want an overview of FTA works, and details on its API as needed, though that m
 ## ChatGPT o1 Deep research Response 2
 
 I'll review the FTA project from both its official website and GitHub repository, focusing on how it works, its API, and any details relevant to integrating it into an ESLint plugin for TypeScript. I'll also check for examples of usage and integrations with other tools, particularly any TypeScript-related ones. Additionally, I'll analyze the discussion in issue #193 on the GitHub repository to see if it provides insights that might be useful for your plugin development. I'll get back to you with a structured summary of my findings.
+
+# Plugin generated-create-eslint-plugin-instructions
+
+Generated document is in ./generated-plugin.md
+
+## Anthony's Original Prompt
+
+Looking at these 2 documents, I want you to generate an ESLint plugin for me. Before we begin though, ask me some questions how to proceed with generating the plugin where you have to make choices (specifically opinionated) and might need subjective input.
+
+## ChatGPT o3-mini-high response
+
+Before we generate the ESLint plugin, I’d like to ask a few questions to make sure it meets your needs:
+
+1. What’s the primary goal of this plugin? For example, do you want it to focus solely on FTA-based complexity analysis, or should it include additional custom linting rules?
+2. Regarding FTA integration: Would you prefer the plugin to run FTA analysis per file (reporting a file-level warning when the FTA score exceeds a threshold) or attempt a more granular analysis (if that becomes available in the future)?
+3. What default FTA complexity score threshold would you like to set for triggering a warning or error—and should that threshold be configurable by the user?
+4. Since FTA’s output is file-level, where would you prefer the lint issue to be reported? For instance, should the warning be attached to the first line of the file or somewhere else?
+5. Do you want the plugin to offer any auto-fix suggestions, or should it only report issues without attempting a fix?
+6. What naming conventions do you have in mind? For example, should the plugin be named something like “eslint-plugin-fta-complexity,” and how should the rule(s) be named?
+7. Finally, should we develop the plugin entirely in TypeScript (as recommended) and target both JavaScript and TypeScript files, or do you have a different preference?
+
+Feel free to provide your input on these points so we can tailor the plugin to your vision.
+
+## Anthony's Answer
+
+1. The primary goal of this is to focus on complexity analysis. There wouldn't really be additional custom linting rules that I can think of.
+2. I want the FTA integration to be on a file basis, do not attempt more granular analysis
+3. The FTA complex a threshold should be suitable by the user. Ideally, we could set a threshold for a warning, and a threshold for an error. If this requires making two rules, that's OK with me, but if you can encapsulate it into a single rule somehow and still have a configurable that would be awesome return.
+4. Yes, it should be attached to the first line of the file. I've seen in some Eslin plug-ins that it ends up highlighting the entire file, this is not ideal. It would ideally just target the first line of that file so that highlighting does not highlight the whole file.
+5. There should be no attempt at auto fixing.
+6. The plug-in should be called `eslint-plugin-fta`. The names should be appropriate per my answer in number three. If there's only a single rule, the name complexity woodwork.
+7. The plug-in should be developed entirely in typescript.
+
+Additionally, if there are any commands, I need to run to set up the plug-in from a blank, repository tacked in git, please provide them.
