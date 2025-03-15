@@ -70,10 +70,9 @@ const complexityRuleConfig = {
                         return;
                     }
                     const score = fileAnalysis.fta_score;
-                    // Report if score is below minimum or above maximum
-                    const isBelowMin = minScore !== undefined && score < minScore;
-                    const isAboveMax = maxScore !== undefined && score > maxScore;
-                    if (isBelowMin || isAboveMax) {
+                    const meetsMin = minScore === undefined || score > minScore;
+                    const meetsMax = maxScore === undefined || score <= maxScore;
+                    if (meetsMin && meetsMax) {
                         const firstToken = context.sourceCode.getFirstToken(node);
                         if (!firstToken) {
                             return;
