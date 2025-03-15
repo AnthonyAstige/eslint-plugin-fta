@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.complexityCouldBeBetter = exports.complexityNeedsImprovement = void 0;
+exports.complexityNeedsImprovement = exports.complexityCouldBeBetter = void 0;
 const utils_1 = require("@typescript-eslint/utils");
 const fta_cli_1 = require("fta-cli");
 const MESSAGE_IDS = {
@@ -8,7 +8,6 @@ const MESSAGE_IDS = {
 };
 const DEFAULT_THRESHOLD = 60;
 const complexityRuleConfig = {
-    name: "placeholder",
     meta: {
         type: "suggestion",
         docs: {
@@ -85,17 +84,6 @@ const complexityRuleConfig = {
         };
     },
 };
-exports.complexityNeedsImprovement = utils_1.ESLintUtils.RuleCreator((name) => `https://example.com/rule/${name}`)({
-    ...complexityRuleConfig,
-    name: "complexity-could-be-better",
-    meta: {
-        ...complexityRuleConfig.meta,
-        docs: {
-            description: "Enforce stricter FTA-based file complexity limits",
-        },
-    },
-    defaultOptions: [{ threshold: 10 }],
-});
 exports.complexityCouldBeBetter = utils_1.ESLintUtils.RuleCreator((name) => `https://example.com/rule/${name}`)({
     ...complexityRuleConfig,
     name: "complexity-could-be-better",
@@ -105,5 +93,16 @@ exports.complexityCouldBeBetter = utils_1.ESLintUtils.RuleCreator((name) => `htt
             description: "Enforce stricter FTA-based file complexity limits",
         },
     },
-    defaultOptions: [{ threshold: 10 }],
+    defaultOptions: [{ threshold: 1 }],
+});
+exports.complexityNeedsImprovement = utils_1.ESLintUtils.RuleCreator((name) => `https://example.com/rule/${name}`)({
+    ...complexityRuleConfig,
+    name: "complexity-needs-improvement",
+    meta: {
+        ...complexityRuleConfig.meta,
+        docs: {
+            description: "Enforce stricter FTA-based file complexity limits",
+        },
+    },
+    defaultOptions: [{ threshold: 50 }],
 });
