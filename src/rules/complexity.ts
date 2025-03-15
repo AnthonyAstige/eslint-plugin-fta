@@ -104,20 +104,6 @@ const complexityRuleConfig: ComplexityRule = {
   },
 };
 
-export const complexityNeedsImprovement = ESLintUtils.RuleCreator(
-  (name) => `https://example.com/rule/${name}`,
-)<Options, MessageIds>({
-  ...complexityRuleConfig,
-  name: "complexity-could-be-better",
-  meta: {
-    ...complexityRuleConfig.meta,
-    docs: {
-      description: "Enforce stricter FTA-based file complexity limits",
-    },
-  },
-  defaultOptions: [{ threshold: 10 }],
-});
-
 export const complexityCouldBeBetter = ESLintUtils.RuleCreator(
   (name) => `https://example.com/rule/${name}`,
 )<Options, MessageIds>({
@@ -129,5 +115,19 @@ export const complexityCouldBeBetter = ESLintUtils.RuleCreator(
       description: "Enforce stricter FTA-based file complexity limits",
     },
   },
-  defaultOptions: [{ threshold: 10 }],
+  defaultOptions: [{ threshold: 1 }],
+});
+
+export const complexityNeedsImprovement = ESLintUtils.RuleCreator(
+  (name) => `https://example.com/rule/${name}`,
+)<Options, MessageIds>({
+  ...complexityRuleConfig,
+  name: "complexity-could-be-better",
+  meta: {
+    ...complexityRuleConfig.meta,
+    docs: {
+      description: "Enforce stricter FTA-based file complexity limits",
+    },
+  },
+  defaultOptions: [{ threshold: 50 }],
 });
