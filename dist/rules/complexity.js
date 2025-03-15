@@ -97,5 +97,5 @@ exports.complexityNeedsImprovement = utils_1.ESLintUtils.RuleCreator((name) => `
             description: "Enforce stricter FTA-based file complexity limits",
         },
     },
-    defaultOptions: [{ threshold: 50 }],
+    defaultOptions: [{ threshold: 30 }],
 });
