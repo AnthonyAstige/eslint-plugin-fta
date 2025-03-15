@@ -122,7 +122,7 @@ export const complexityNeedsImprovement = ESLintUtils.RuleCreator(
   (name) => `https://example.com/rule/${name}`,
 )<Options, MessageIds>({
   ...complexityRuleConfig,
-  name: "complexity-could-be-better",
+  name: "complexity-needs-improvement",
   meta: {
     ...complexityRuleConfig.meta,
     docs: {
