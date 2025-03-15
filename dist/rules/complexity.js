@@ -64,7 +64,7 @@ const complexityRuleConfig = {
                             node: firstToken,
                             messageId: MESSAGE_IDS.COMPLEXITY_ERROR,
                             data: {
-                                score,
+                                score: Math.round(score * 10) / 10,
                                 threshold,
                             },
                         });
