@@ -1,6 +1,5 @@
 import { TSESTree, ESLintUtils } from "@typescript-eslint/utils";
 import { runFta } from "fta-cli";
-import * as path from "node:path";
 
 type Options = readonly [
   {
@@ -67,7 +66,6 @@ export default ESLintUtils.RuleCreator(
     return {
       "Program:exit"(node: TSESTree.Program) {
         try {
-          // Run FTA on the file’s directory so we can extract analysis for the current file
           // Note: I think runFta is supposed to take a path, but passing it a single file seems to work (it just doesn't have the filename in the output)
           const output = runFta(filename, { json: true });
           let results: any;
