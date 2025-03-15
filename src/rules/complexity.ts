@@ -66,9 +66,9 @@ const complexityRuleConfig: ComplexityRule = {
     context: Readonly<RuleContext<MessageIds, Options>>,
     [options]: Options,
   ) {
-    const minScore =
+    const scoreMustBeAbove =
       "when-above" in options ? options["when-above"] : undefined;
-    const maxScore =
+    const scoreMustBeAtOrBelow =
       "when-equal-to-or-under" in options
         ? options["when-equal-to-or-under"]
         : undefined;
@@ -100,10 +100,10 @@ const complexityRuleConfig: ComplexityRule = {
           }
 
           const score = fileAnalysis.fta_score;
-          const meetsMin = minScore === undefined || score > minScore;
-          const meetsMax = maxScore === undefined || score <= maxScore;
+          const meetsMinThreshold = scoreMustBeAbove === undefined || score > scoreMustBeAbove;
+          const meetsMaxThreshold = scoreMustBeAtOrBelow === undefined || score <= scoreMustBeAtOrBelow;
 
-          if (meetsMin && meetsMax) {
+          if (meetsMinThreshold && meetsMaxThreshold) {
             const firstToken = context.sourceCode.getFirstToken(node);
             if (!firstToken) {
               return;
@@ -114,8 +114,7 @@ const complexityRuleConfig: ComplexityRule = {
               messageId: MESSAGE_IDS.COMPLEXITY_ERROR,
               data: {
                 score: Math.round(score * 10) / 10,
-                minScore,
-                maxScore,
+                threshold: scoreMustBeAtOrBelow,
               },
             });
           }
