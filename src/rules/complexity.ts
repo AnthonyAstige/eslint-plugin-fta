@@ -1,8 +1,11 @@
 import { TSESTree, ESLintUtils } from "@typescript-eslint/utils";
 import { RuleContext } from "@typescript-eslint/utils/dist/ts-eslint/Rule";
-import { RuleWithMeta } from "@typescript-eslint/utils/dist/eslint-utils/RuleCreator";
+import { RuleWithMetaAndName } from "@typescript-eslint/utils/dist/eslint-utils/RuleCreator";
 
-type ComplexityRule = Omit<RuleWithMeta<Options, MessageIds>, "defaultOptions">;
+type ComplexityRule = Omit<
+  RuleWithMetaAndName<Options, MessageIds>,
+  "defaultOptions" | "name"
+>;
 import { AnalyzedFile, runFta } from "fta-cli";
 
 type Options = readonly [
@@ -129,12 +132,6 @@ export const complexityCouldBeBetter = ESLintUtils.RuleCreator(
 )<Options, MessageIds>({
   ...complexityRuleConfig,
   name: "complexity-could-be-better",
-  meta: {
-    ...complexityRuleConfig.meta,
-    docs: {
-      description: "Enforce stricter FTA-based file complexity limits",
-    },
-  },
   defaultOptions: [{ "when-above": 1, "when-equal-to-or-under": 30 }],
 });
 
@@ -143,11 +140,5 @@ export const complexityNeedsImprovement = ESLintUtils.RuleCreator(
 )<Options, MessageIds>({
   ...complexityRuleConfig,
   name: "complexity-needs-improvement",
-  meta: {
-    ...complexityRuleConfig.meta,
-    docs: {
-      description: "Enforce stricter FTA-based file complexity limits",
-    },
-  },
   defaultOptions: [{ "when-above": 30 }],
 });

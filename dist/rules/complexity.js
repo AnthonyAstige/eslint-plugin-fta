@@ -98,22 +98,10 @@ const complexityRuleConfig = {
 exports.complexityCouldBeBetter = utils_1.ESLintUtils.RuleCreator((name) => `https://example.com/rule/${name}`)({
     ...complexityRuleConfig,
     name: "complexity-could-be-better",
-    meta: {
-        ...complexityRuleConfig.meta,
-        docs: {
-            description: "Enforce stricter FTA-based file complexity limits",
-        },
-    },
     defaultOptions: [{ "when-above": 1, "when-equal-to-or-under": 30 }],
 });
 exports.complexityNeedsImprovement = utils_1.ESLintUtils.RuleCreator((name) => `https://example.com/rule/${name}`)({
     ...complexityRuleConfig,
     name: "complexity-needs-improvement",
-    meta: {
-        ...complexityRuleConfig.meta,
-        docs: {
-            description: "Enforce stricter FTA-based file complexity limits",
-        },
-    },
     defaultOptions: [{ "when-above": 30 }],
 });

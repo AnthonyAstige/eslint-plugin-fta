@@ -16,16 +16,3 @@ export declare const rules: {
         "when-equal-to-or-under": number;
     }], unknown, import("@typescript-eslint/utils/dist/ts-eslint").RuleListener>;
 };
-export declare const configs: {
-    recommended: {
-        plugins: string[];
-        rules: {
-            "complexity-could-be-better": (string | {
-                "when-above": number;
-            })[];
-            "complexity-needs-improvement": (string | {
-                "when-above": number;
-            })[];
-        };
-    };
-};
