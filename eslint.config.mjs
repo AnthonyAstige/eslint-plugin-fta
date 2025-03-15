@@ -11,8 +11,8 @@ export default [
       fta
     },
     rules: {
-      'fta/complexity-needs-improvement': 'warn',
-      'fta/complexity-could-be-better': 'error'
+      'fta/complexity-needs-improvement': 'error',
+      'fta/complexity-could-be-better': 'warn'
     }
   }
 ];
