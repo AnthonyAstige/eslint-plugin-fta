@@ -1,7 +1,6 @@
 export declare const rules: {
-    complexity: import("@typescript-eslint/utils/dist/ts-eslint").RuleModule<"complexityWarning" | "complexityError", readonly [{
-        warningThreshold: number;
-        errorThreshold: number;
+    complexity: import("@typescript-eslint/utils/dist/ts-eslint").RuleModule<"complexityError", readonly [{
+        threshold: number;
     }], unknown, import("@typescript-eslint/utils/dist/ts-eslint").RuleListener>;
 };
 export declare const configs: {

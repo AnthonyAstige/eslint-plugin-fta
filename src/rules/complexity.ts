@@ -3,18 +3,15 @@ import { runFta } from "fta-cli";
 
 type Options = readonly [
   {
-    warningThreshold: number;
-    errorThreshold: number;
+    threshold: number;
   },
 ];
 
 const MESSAGE_IDS = {
-  COMPLEXITY_WARNING: "complexityWarning",
   COMPLEXITY_ERROR: "complexityError",
 } as const;
 
-const DEFAULT_WARNING_THRESHOLD = 50;
-const DEFAULT_ERROR_THRESHOLD = 60;
+const DEFAULT_THRESHOLD = 60;
 
 export default ESLintUtils.RuleCreator(
   (name) => `https://example.com/rule/${name}`,
@@ -26,19 +23,14 @@ export default ESLintUtils.RuleCreator(
       description: "Enforce FTA-based file complexity limits",
     },
     messages: {
-      [MESSAGE_IDS.COMPLEXITY_WARNING]:
-        "FTA complexity score ({{score}}) exceeds the warning threshold ({{threshold}}). Consider refactoring.",
       [MESSAGE_IDS.COMPLEXITY_ERROR]:
-        "FTA complexity score ({{score}}) exceeds the error threshold ({{threshold}}). File is too complex.",
+        "FTA complexity score ({{score}}) exceeds the maximum allowed threshold ({{threshold}}).",
     },
     schema: [
       {
         type: "object",
         properties: {
-          warningThreshold: {
-            type: "number",
-          },
-          errorThreshold: {
+          threshold: {
             type: "number",
           },
         },
@@ -49,13 +41,11 @@ export default ESLintUtils.RuleCreator(
   },
   defaultOptions: [
     {
-      warningThreshold: DEFAULT_WARNING_THRESHOLD,
-      errorThreshold: DEFAULT_ERROR_THRESHOLD,
+      threshold: DEFAULT_THRESHOLD,
     },
   ],
   create(context, [options]: Options) {
-    const warningThreshold = options.warningThreshold;
-    const errorThreshold = options.errorThreshold;
+    const threshold = options.threshold;
     const filename = context.filename;
 
     // Skip virtual files (e.g. "<input>")
@@ -81,34 +71,19 @@ export default ESLintUtils.RuleCreator(
           }
 
           const score = fileAnalysis.fta_score;
-          // Only report if the score exceeds at least the warning threshold
-          if (score < warningThreshold) {
-            return;
-          }
+          // Only report if the score exceeds the threshold
+          if (score >= threshold) {
+            const firstToken = context.sourceCode.getFirstToken(node);
+            if (!firstToken) {
+              return;
+            }
 
-          const firstToken = context.sourceCode.getFirstToken(node);
-          if (!firstToken) {
-            return;
-          }
-
-          // Report as error if the score is at or above the error threshold,
-          // otherwise report as a warning.
-          if (score >= errorThreshold) {
             context.report({
               node: firstToken,
               messageId: MESSAGE_IDS.COMPLEXITY_ERROR,
               data: {
                 score,
-                threshold: errorThreshold,
-              },
-            });
-          } else {
-            context.report({
-              node: firstToken,
-              messageId: MESSAGE_IDS.COMPLEXITY_WARNING,
-              data: {
-                score,
-                threshold: warningThreshold,
+                threshold,
               },
             });
           }

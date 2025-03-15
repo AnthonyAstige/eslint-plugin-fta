@@ -14,8 +14,7 @@ export default [
       'fta/complexity': [
         'warn',
         {
-          warningThreshold: 1,
-          errorThreshold: 10,
+          threshold: 1,
         }
       ]
     }
