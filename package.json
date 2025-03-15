@@ -35,5 +35,5 @@
   "peerDependencies": {
     "eslint": ">=9.0.0",
     "fta-cli": ">=2.0.0"
-  },
+  }
 }
