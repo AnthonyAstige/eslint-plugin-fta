@@ -1,12 +1,8 @@
 import { TSESTree, ESLintUtils } from "@typescript-eslint/utils";
 import { RuleContext } from "@typescript-eslint/utils/dist/ts-eslint/Rule";
-import { RuleWithMetaAndName } from "@typescript-eslint/utils/dist/eslint-utils/RuleCreator";
+import { RuleWithMeta } from "@typescript-eslint/utils/dist/eslint-utils/RuleCreator";
 
-type ComplexityRule = RuleWithMetaAndName<
-  Options,
-  MessageIds,
-  { description: string }
->;
+type ComplexityRule = RuleWithMeta<Options, MessageIds>;
 import { runFta } from "fta-cli";
 
 type Options = readonly [
@@ -24,7 +20,6 @@ type MessageIds = (typeof MESSAGE_IDS)[keyof typeof MESSAGE_IDS];
 const DEFAULT_THRESHOLD = 60;
 
 const complexityRuleConfig: ComplexityRule = {
-  name: "placeholder",
   meta: {
     type: "suggestion",
     docs: {
