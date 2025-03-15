@@ -2,7 +2,7 @@ import { TSESTree, ESLintUtils } from "@typescript-eslint/utils";
 import { RuleContext } from "@typescript-eslint/utils/dist/ts-eslint/Rule";
 import { RuleWithMeta } from "@typescript-eslint/utils/dist/eslint-utils/RuleCreator";
 
-type ComplexityRule = RuleWithMeta<Options, MessageIds>;
+type ComplexityRule = Omit<RuleWithMeta<Options, MessageIds>, "defaultOptions">;
 import { runFta } from "fta-cli";
 
 type Options = readonly [
@@ -42,17 +42,10 @@ const complexityRuleConfig: ComplexityRule = {
     ],
     // No fixable property as autofix is not provided
   },
-  defaultOptions: [
-    {
-      // TODO: Configure this per rule
-      threshold: DEFAULT_THRESHOLD,
-    },
-  ],
   create(
     context: Readonly<RuleContext<MessageIds, Options>>,
     [options]: Options,
   ) {
-    // const options = context.options[0];
     console.log(options);
     const threshold = options.threshold;
     const filename = context.filename;
