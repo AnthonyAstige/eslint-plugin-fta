@@ -22,7 +22,7 @@ const complexityRuleConfig = {
                     "when-above": {
                         type: "number",
                     },
-                    "when-equal-to-or-under": {
+                    "when-at-or-under": {
                         type: "number",
                     },
                 },
@@ -34,17 +34,15 @@ const complexityRuleConfig = {
                     },
                     {
                         type: "object",
-                        required: ["when-equal-to-or-under"],
+                        required: ["when-at-or-under"],
                     },
                 ],
             },
         ],
     },
     create(context, [options]) {
-        const minScore = "when-above" in options ? options["when-above"] : undefined;
-        const maxScore = "when-equal-to-or-under" in options
-            ? options["when-equal-to-or-under"]
-            : undefined;
+        const scoreMustBeAbove = "when-above" in options ? options["when-above"] : undefined;
+        const scoreMustBeAtOrBelow = "when-at-or-under" in options ? options["when-at-or-under"] : undefined;
         const filename = context.filename;
         // Skip virtual files (e.g. "<input>")
         if (filename === "<input>") {
@@ -70,9 +68,9 @@ const complexityRuleConfig = {
                         return;
                     }
                     const score = fileAnalysis.fta_score;
-                    const meetsMin = minScore === undefined || score > minScore;
-                    const meetsMax = maxScore === undefined || score <= maxScore;
-                    if (meetsMin && meetsMax) {
+                    const meetsMinThreshold = scoreMustBeAbove === undefined || score > scoreMustBeAbove;
+                    const meetsMaxThreshold = scoreMustBeAtOrBelow === undefined || score <= scoreMustBeAtOrBelow;
+                    if (meetsMinThreshold && meetsMaxThreshold) {
                         const firstToken = context.sourceCode.getFirstToken(node);
                         if (!firstToken) {
                             return;
@@ -82,8 +80,7 @@ const complexityRuleConfig = {
                             messageId: MESSAGE_IDS.COMPLEXITY_ERROR,
                             data: {
                                 score: Math.round(score * 10) / 10,
-                                minScore,
-                                maxScore,
+                                threshold: scoreMustBeAtOrBelow,
                             },
                         });
                     }
@@ -98,7 +95,7 @@ const complexityRuleConfig = {
 exports.complexityCouldBeBetter = utils_1.ESLintUtils.RuleCreator((name) => `https://example.com/rule/${name}`)({
     ...complexityRuleConfig,
     name: "complexity-could-be-better",
-    defaultOptions: [{ "when-above": 1, "when-equal-to-or-under": 30 }],
+    defaultOptions: [{ "when-above": 1, "when-at-or-under": 30 }],
 });
 exports.complexityNeedsImprovement = utils_1.ESLintUtils.RuleCreator((name) => `https://example.com/rule/${name}`)({
     ...complexityRuleConfig,

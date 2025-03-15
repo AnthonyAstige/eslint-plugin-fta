@@ -3,10 +3,10 @@ type Options = readonly [
     {
         "when-above": number;
     } | {
-        "when-equal-to-or-under": number;
+        "when-at-or-under": number;
     } | {
         "when-above": number;
-        "when-equal-to-or-under": number;
+        "when-at-or-under": number;
     }
 ];
 export declare const complexityCouldBeBetter: ESLintUtils.RuleModule<"complexityError", Options, unknown, ESLintUtils.RuleListener>;

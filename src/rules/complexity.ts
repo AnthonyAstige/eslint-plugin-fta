@@ -13,11 +13,11 @@ type Options = readonly [
       "when-above": number;
     }
   | {
-      "when-equal-to-or-under": number;
+      "when-at-or-under": number;
     }
   | {
       "when-above": number;
-      "when-equal-to-or-under": number;
+      "when-at-or-under": number;
     },
 ];
 
@@ -44,7 +44,7 @@ const complexityRuleConfig: ComplexityRule = {
           "when-above": {
             type: "number",
           },
-          "when-equal-to-or-under": {
+          "when-at-or-under": {
             type: "number",
           },
         },
@@ -56,7 +56,7 @@ const complexityRuleConfig: ComplexityRule = {
           },
           {
             type: "object",
-            required: ["when-equal-to-or-under"],
+            required: ["when-at-or-under"],
           },
         ],
       },
@@ -69,9 +69,7 @@ const complexityRuleConfig: ComplexityRule = {
     const scoreMustBeAbove =
       "when-above" in options ? options["when-above"] : undefined;
     const scoreMustBeAtOrBelow =
-      "when-equal-to-or-under" in options
-        ? options["when-equal-to-or-under"]
-        : undefined;
+      "when-at-or-under" in options ? options["when-at-or-under"] : undefined;
     const filename = context.filename;
 
     // Skip virtual files (e.g. "<input>")
@@ -100,8 +98,10 @@ const complexityRuleConfig: ComplexityRule = {
           }
 
           const score = fileAnalysis.fta_score;
-          const meetsMinThreshold = scoreMustBeAbove === undefined || score > scoreMustBeAbove;
-          const meetsMaxThreshold = scoreMustBeAtOrBelow === undefined || score <= scoreMustBeAtOrBelow;
+          const meetsMinThreshold =
+            scoreMustBeAbove === undefined || score > scoreMustBeAbove;
+          const meetsMaxThreshold =
+            scoreMustBeAtOrBelow === undefined || score <= scoreMustBeAtOrBelow;
 
           if (meetsMinThreshold && meetsMaxThreshold) {
             const firstToken = context.sourceCode.getFirstToken(node);
@@ -131,7 +131,7 @@ export const complexityCouldBeBetter = ESLintUtils.RuleCreator(
 )<Options, MessageIds>({
   ...complexityRuleConfig,
   name: "complexity-could-be-better",
-  defaultOptions: [{ "when-above": 1, "when-equal-to-or-under": 30 }],
+  defaultOptions: [{ "when-above": 1, "when-at-or-under": 30 }],
 });
 
 export const complexityNeedsImprovement = ESLintUtils.RuleCreator(
