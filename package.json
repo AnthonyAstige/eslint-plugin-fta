@@ -1,7 +1,10 @@
 {
   "name": "eslint-plugin-fta",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "directories": {
     "doc": "docs"
   },
@@ -9,10 +12,16 @@
     "build": "npx tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "fta",
+    "eslint",
+    "eslintplugin",
+    "typescript",
+    "complexity"
+  ],
   "author": "Anthony Astige",
   "license": "ISC",
-  "description": "",
+  "description": "ESLint plugin for FTA (Fast TypeScript Analyzer) complexity analysis. Enforces file-level complexity thresholds based on FTA's scoring system.",
   "devDependencies": {
     "@types/node": "^22.13.10",
     "@typescript-eslint/parser": "^8.26.1",
@@ -21,5 +30,8 @@
     "eslint": "^9.22.0",
     "fta-cli": "^2.0.1",
     "typescript": "^5.8.2"
+  },
+  "peerDependencies": {
+    "eslint": ">=9.0.0"
   }
 }
