@@ -97,7 +97,6 @@ const complexityRuleConfig: ComplexityRule = {
           }
 
           const score = fileAnalysis.fta_score;
-          // Report if score is below minimum or above maximum
           const isAbove = minScore !== undefined && score > minScore;
           const isEqualToOrBelow = maxScore !== undefined && score <= maxScore;
 
