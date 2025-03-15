@@ -69,7 +69,8 @@ export default ESLintUtils.RuleCreator(
         try {
           // Run FTA on the file’s directory so we can extract analysis for the current file
           const dir = path.dirname(filename);
-          const output = runFta(dir, { json: true });
+          // Note: I think runFta is supposed to take a path, but passing it a single file seems to work (it just doesn't have the filename in the output)
+          const output = runFta(filename, { json: true });
           let results: any;
           try {
             results = typeof output === "string" ? JSON.parse(output) : output;
@@ -77,9 +78,7 @@ export default ESLintUtils.RuleCreator(
             return;
           }
           // If results is an array, pick out the analysis for our file (assuming FTA returns an object with a 'file' property)
-          const fileAnalysis = Array.isArray(results)
-            ? results.find((entry: any) => entry.file === filename)
-            : results;
+          const fileAnalysis = results[0];
 
           if (!fileAnalysis) {
             return;
