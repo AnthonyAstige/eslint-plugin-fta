@@ -5,7 +5,7 @@ ESLint plugin for FTA (Fast TypeScript Analyzer) complexity analysis. Enforces f
 ## Installation
 
 ```bash
-npm install eslint-plugin-fta fta-cli
+npm install eslint-plugin-fta
 ```
 
 ## Usage
