@@ -13,7 +13,7 @@ const complexityRuleConfig = {
             description: "Enforce FTA-based file complexity limits",
         },
         messages: {
-            [MESSAGE_IDS.COMPLEXITY_ERROR]: "File has high FTA complexity score ({{score}}) which is above {{scoreMustBeAbove}}.",
+            [MESSAGE_IDS.COMPLEXITY_ERROR]: "File's high FTA complexity score ({{score}}) is above {{scoreMustBeAbove}}.",
         },
         schema: [
             {
@@ -41,7 +41,7 @@ const complexityRuleConfig = {
         ],
     },
     create(context, [options]) {
-        const scoreMustBeAbove = "when-above" in options ? options["when-above"] : undefined;
+        const scoreMustBeAbove = options["when-above"];
         const scoreMustBeAtOrBelow = "when-at-or-under" in options ? options["when-at-or-under"] : undefined;
         const filename = context.filename;
         // Skip virtual files (e.g. "<input>")

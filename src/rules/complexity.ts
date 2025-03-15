@@ -32,7 +32,7 @@ const complexityRuleConfig: ComplexityRule = {
     },
     messages: {
       [MESSAGE_IDS.COMPLEXITY_ERROR]:
-        "File has high FTA complexity score ({{score}}) which is above {{scoreMustBeAbove}}.",
+        "File's high FTA complexity score ({{score}}) is above {{scoreMustBeAbove}}.",
     },
     schema: [
       {
