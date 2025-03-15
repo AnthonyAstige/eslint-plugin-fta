@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-fta",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "dist/index.js",
   "files": [
     "dist"
@@ -11,7 +11,7 @@
   "scripts": {
     "build": "npx tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "publish": "npm run build && npm publish"
+    "pub": "npm run build && npm publish"
   },
   "keywords": [
     "fta",
