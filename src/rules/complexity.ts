@@ -17,8 +17,6 @@ const MESSAGE_IDS = {
 
 type MessageIds = (typeof MESSAGE_IDS)[keyof typeof MESSAGE_IDS];
 
-const DEFAULT_THRESHOLD = 60;
-
 const complexityRuleConfig: ComplexityRule = {
   meta: {
     type: "suggestion",
@@ -40,13 +38,11 @@ const complexityRuleConfig: ComplexityRule = {
         additionalProperties: false,
       },
     ],
-    // No fixable property as autofix is not provided
   },
   create(
     context: Readonly<RuleContext<MessageIds, Options>>,
     [options]: Options,
   ) {
-    console.log(options);
     const threshold = options.threshold;
     const filename = context.filename;
 
@@ -58,7 +54,10 @@ const complexityRuleConfig: ComplexityRule = {
     return {
       "Program:exit"(node: TSESTree.Program) {
         try {
-          // Note: I think runFta is supposed to take a path, but passing it a single file seems to work (it just doesn't have the filename in the output)
+          /**
+           * `runFta` has projectPath as it's first parameter, but passing it a file seems to work,
+           * it just doesn't have the filename in the output)
+           */
           const output = runFta(filename, { json: true });
           let results: any;
           try {

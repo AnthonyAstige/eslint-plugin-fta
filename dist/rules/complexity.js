@@ -6,7 +6,6 @@ const fta_cli_1 = require("fta-cli");
 const MESSAGE_IDS = {
     COMPLEXITY_ERROR: "complexityError",
 };
-const DEFAULT_THRESHOLD = 60;
 const complexityRuleConfig = {
     meta: {
         type: "suggestion",
@@ -27,17 +26,8 @@ const complexityRuleConfig = {
                 additionalProperties: false,
             },
         ],
-        // No fixable property as autofix is not provided
     },
-    defaultOptions: [
-        {
-            // TODO: Configure this per rule
-            threshold: DEFAULT_THRESHOLD,
-        },
-    ],
     create(context, [options]) {
-        // const options = context.options[0];
-        console.log(options);
         const threshold = options.threshold;
         const filename = context.filename;
         // Skip virtual files (e.g. "<input>")
@@ -47,7 +37,10 @@ const complexityRuleConfig = {
         return {
             "Program:exit"(node) {
                 try {
-                    // Note: I think runFta is supposed to take a path, but passing it a single file seems to work (it just doesn't have the filename in the output)
+                    /**
+                     * `runFta` has projectPath as it's first parameter, but passing it a file seems to work,
+                     * it just doesn't have the filename in the output)
+                     */
                     const output = (0, fta_cli_1.runFta)(filename, { json: true });
                     let results;
                     try {
