@@ -10,7 +10,8 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publish": "npm run build && npm publish"
   },
   "keywords": [
     "fta",
