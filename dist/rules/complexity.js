@@ -95,10 +95,10 @@ const complexityRuleConfig = {
 exports.complexityCouldBeBetter = utils_1.ESLintUtils.RuleCreator((name) => `https://example.com/rule/${name}`)({
     ...complexityRuleConfig,
     name: "complexity-could-be-better",
-    defaultOptions: [{ "when-above": 1, "when-at-or-under": 30 }],
+    defaultOptions: [{ "when-above": 50, "when-at-or-under": 60 }],
 });
 exports.complexityNeedsImprovement = utils_1.ESLintUtils.RuleCreator((name) => `https://example.com/rule/${name}`)({
     ...complexityRuleConfig,
     name: "complexity-needs-improvement",
-    defaultOptions: [{ "when-above": 30 }],
+    defaultOptions: [{ "when-above": 60 }],
 });

@@ -127,7 +127,7 @@ export const complexityCouldBeBetter = ESLintUtils.RuleCreator(
 )<Options, MessageIds>({
   ...complexityRuleConfig,
   name: "complexity-could-be-better",
-  defaultOptions: [{ "when-above": 1, "when-at-or-under": 30 }],
+  defaultOptions: [{ "when-above": 50, "when-at-or-under": 60 }],
 });
 
 export const complexityNeedsImprovement = ESLintUtils.RuleCreator(
@@ -135,5 +135,5 @@ export const complexityNeedsImprovement = ESLintUtils.RuleCreator(
 )<Options, MessageIds>({
   ...complexityRuleConfig,
   name: "complexity-needs-improvement",
-  defaultOptions: [{ "when-above": 30 }],
+  defaultOptions: [{ "when-above": 60 }],
 });
