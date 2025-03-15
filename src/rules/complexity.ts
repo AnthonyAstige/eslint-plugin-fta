@@ -114,7 +114,8 @@ const complexityRuleConfig: ComplexityRule = {
               messageId: MESSAGE_IDS.COMPLEXITY_ERROR,
               data: {
                 score: Math.round(score * 10) / 10,
-                threshold: scoreMustBeAtOrBelow,
+                scoreMustBeAtOrBelow,
+                scoreMustBeAbove,
               },
             });
           }
