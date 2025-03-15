@@ -13,8 +13,8 @@ export const configs = {
   recommended: {
     plugins: ["fta"],
     rules: {
-      "complexity-could-be-better": ["warn", { threshold: 50 }],
-      "complexity-needs-improvement": ["error", { threshold: 60 }],
+      "complexity-could-be-better": ["warn", { "maximum-score": 50 }],
+      "complexity-needs-improvement": ["error", { "maximum-score": 60 }],
     },
   },
 };

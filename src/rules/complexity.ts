@@ -6,9 +6,16 @@ type ComplexityRule = Omit<RuleWithMeta<Options, MessageIds>, "defaultOptions">;
 import { AnalyzedFile, runFta } from "fta-cli";
 
 type Options = readonly [
-  {
-    threshold: number;
-  },
+  | {
+      "minimum-score": number;
+    }
+  | {
+      "maximum-score": number;
+    }
+  | {
+      "minimum-score": number;
+      "maximum-score": number;
+    },
 ];
 
 const MESSAGE_IDS = {
@@ -31,11 +38,24 @@ const complexityRuleConfig: ComplexityRule = {
       {
         type: "object",
         properties: {
-          threshold: {
+          "minimum-score": {
+            type: "number",
+          },
+          "maximum-score": {
             type: "number",
           },
         },
         additionalProperties: false,
+        anyOf: [
+          {
+            type: "object",
+            required: ["minimum-score"],
+          },
+          {
+            type: "object",
+            required: ["maximum-score"],
+          },
+        ],
       },
     ],
   },
@@ -43,7 +63,10 @@ const complexityRuleConfig: ComplexityRule = {
     context: Readonly<RuleContext<MessageIds, Options>>,
     [options]: Options,
   ) {
-    const threshold = options.threshold;
+    const minScore =
+      "minimum-score" in options ? options["minimum-score"] : undefined;
+    const maxScore =
+      "maximum-score" in options ? options["maximum-score"] : undefined;
     const filename = context.filename;
 
     // Skip virtual files (e.g. "<input>")
@@ -72,8 +95,11 @@ const complexityRuleConfig: ComplexityRule = {
           }
 
           const score = fileAnalysis.fta_score;
-          // Only report if the score exceeds the threshold
-          if (score >= threshold) {
+          // Report if score is below minimum or above maximum
+          const isBelowMin = minScore !== undefined && score < minScore;
+          const isAboveMax = maxScore !== undefined && score > maxScore;
+
+          if (isBelowMin || isAboveMax) {
             const firstToken = context.sourceCode.getFirstToken(node);
             if (!firstToken) {
               return;
@@ -84,7 +110,8 @@ const complexityRuleConfig: ComplexityRule = {
               messageId: MESSAGE_IDS.COMPLEXITY_ERROR,
               data: {
                 score: Math.round(score * 10) / 10,
-                threshold,
+                minScore,
+                maxScore,
               },
             });
           }
@@ -107,7 +134,7 @@ export const complexityCouldBeBetter = ESLintUtils.RuleCreator(
       description: "Enforce stricter FTA-based file complexity limits",
     },
   },
-  defaultOptions: [{ threshold: 1 }],
+  defaultOptions: [{ "minimum-score": 1, "maximum-score": 30 }],
 });
 
 export const complexityNeedsImprovement = ESLintUtils.RuleCreator(
@@ -121,5 +148,5 @@ export const complexityNeedsImprovement = ESLintUtils.RuleCreator(
       description: "Enforce stricter FTA-based file complexity limits",
     },
   },
-  defaultOptions: [{ threshold: 30 }],
+  defaultOptions: [{ "minimum-score": 30 }],
 });

@@ -1,9 +1,19 @@
 export declare const rules: {
     "complexity-could-be-better": import("@typescript-eslint/utils/dist/ts-eslint").RuleModule<"complexityError", readonly [{
-        threshold: number;
+        "minimum-score": number;
+    } | {
+        "maximum-score": number;
+    } | {
+        "minimum-score": number;
+        "maximum-score": number;
     }], unknown, import("@typescript-eslint/utils/dist/ts-eslint").RuleListener>;
     "complexity-needs-improvement": import("@typescript-eslint/utils/dist/ts-eslint").RuleModule<"complexityError", readonly [{
-        threshold: number;
+        "minimum-score": number;
+    } | {
+        "maximum-score": number;
+    } | {
+        "minimum-score": number;
+        "maximum-score": number;
     }], unknown, import("@typescript-eslint/utils/dist/ts-eslint").RuleListener>;
 };
 export declare const configs: {
@@ -11,10 +21,10 @@ export declare const configs: {
         plugins: string[];
         rules: {
             "complexity-could-be-better": (string | {
-                threshold: number;
+                "maximum-score": number;
             })[];
             "complexity-needs-improvement": (string | {
-                threshold: number;
+                "maximum-score": number;
             })[];
         };
     };

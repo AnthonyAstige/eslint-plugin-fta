@@ -1,7 +1,12 @@
 import { ESLintUtils } from "@typescript-eslint/utils";
 type Options = readonly [
     {
-        threshold: number;
+        "minimum-score": number;
+    } | {
+        "maximum-score": number;
+    } | {
+        "minimum-score": number;
+        "maximum-score": number;
     }
 ];
 export declare const complexityCouldBeBetter: ESLintUtils.RuleModule<"complexityError", Options, unknown, ESLintUtils.RuleListener>;

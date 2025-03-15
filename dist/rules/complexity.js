@@ -19,16 +19,30 @@ const complexityRuleConfig = {
             {
                 type: "object",
                 properties: {
-                    threshold: {
+                    "minimum-score": {
+                        type: "number",
+                    },
+                    "maximum-score": {
                         type: "number",
                     },
                 },
                 additionalProperties: false,
+                anyOf: [
+                    {
+                        type: "object",
+                        required: ["minimum-score"],
+                    },
+                    {
+                        type: "object",
+                        required: ["maximum-score"],
+                    },
+                ],
             },
         ],
     },
     create(context, [options]) {
-        const threshold = options.threshold;
+        const minScore = "minimum-score" in options ? options["minimum-score"] : undefined;
+        const maxScore = "maximum-score" in options ? options["maximum-score"] : undefined;
         const filename = context.filename;
         // Skip virtual files (e.g. "<input>")
         if (filename === "<input>") {
@@ -54,8 +68,10 @@ const complexityRuleConfig = {
                         return;
                     }
                     const score = fileAnalysis.fta_score;
-                    // Only report if the score exceeds the threshold
-                    if (score >= threshold) {
+                    // Report if score is below minimum or above maximum
+                    const isBelowMin = minScore !== undefined && score < minScore;
+                    const isAboveMax = maxScore !== undefined && score > maxScore;
+                    if (isBelowMin || isAboveMax) {
                         const firstToken = context.sourceCode.getFirstToken(node);
                         if (!firstToken) {
                             return;
@@ -65,7 +81,8 @@ const complexityRuleConfig = {
                             messageId: MESSAGE_IDS.COMPLEXITY_ERROR,
                             data: {
                                 score: Math.round(score * 10) / 10,
-                                threshold,
+                                minScore,
+                                maxScore,
                             },
                         });
                     }
@@ -86,7 +103,7 @@ exports.complexityCouldBeBetter = utils_1.ESLintUtils.RuleCreator((name) => `htt
             description: "Enforce stricter FTA-based file complexity limits",
         },
     },
-    defaultOptions: [{ threshold: 1 }],
+    defaultOptions: [{ "minimum-score": 1, "maximum-score": 30 }],
 });
 exports.complexityNeedsImprovement = utils_1.ESLintUtils.RuleCreator((name) => `https://example.com/rule/${name}`)({
     ...complexityRuleConfig,
@@ -97,5 +114,5 @@ exports.complexityNeedsImprovement = utils_1.ESLintUtils.RuleCreator((name) => `
             description: "Enforce stricter FTA-based file complexity limits",
         },
     },
-    defaultOptions: [{ threshold: 30 }],
+    defaultOptions: [{ "minimum-score": 30 }],
 });
