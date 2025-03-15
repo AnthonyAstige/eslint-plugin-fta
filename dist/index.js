@@ -1,18 +1,18 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.configs = exports.rules = void 0;
-const complexity_1 = __importDefault(require("./rules/complexity"));
+const complexity_1 = require("./rules/complexity");
 exports.rules = {
-    complexity: complexity_1.default,
+    "complexity-could-be-better": complexity_1.complexityCouldBeBetter,
+    "complexity-needs-improvement": complexity_1.complexityNeedsImprovement,
 };
 exports.configs = {
+    // TODO: See if I need defaults in complexity.ts if I have recos here? What do they each do? At least DRY it?
     recommended: {
         plugins: ["fta"],
         rules: {
-            "fta/complexity": "warn",
+            "complexity-could-be-better": ["warn", { threshold: 50 }],
+            "complexity-needs-improvement": ["error", { threshold: 60 }],
         },
     },
 };

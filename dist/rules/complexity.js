@@ -1,13 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.complexityCouldBeBetter = exports.complexityNeedsImprovement = void 0;
 const utils_1 = require("@typescript-eslint/utils");
 const fta_cli_1 = require("fta-cli");
 const MESSAGE_IDS = {
     COMPLEXITY_ERROR: "complexityError",
 };
 const DEFAULT_THRESHOLD = 60;
-exports.default = utils_1.ESLintUtils.RuleCreator((name) => `https://example.com/rule/${name}`)({
-    name: "complexity",
+const complexityRuleConfig = {
+    name: "placeholder",
     meta: {
         type: "suggestion",
         docs: {
@@ -31,10 +32,13 @@ exports.default = utils_1.ESLintUtils.RuleCreator((name) => `https://example.com
     },
     defaultOptions: [
         {
+            // TODO: Configure this per rule
             threshold: DEFAULT_THRESHOLD,
         },
     ],
     create(context, [options]) {
+        // const options = context.options[0];
+        console.log(options);
         const threshold = options.threshold;
         const filename = context.filename;
         // Skip virtual files (e.g. "<input>")
@@ -80,4 +84,26 @@ exports.default = utils_1.ESLintUtils.RuleCreator((name) => `https://example.com
             },
         };
     },
+};
+exports.complexityNeedsImprovement = utils_1.ESLintUtils.RuleCreator((name) => `https://example.com/rule/${name}`)({
+    ...complexityRuleConfig,
+    name: "complexity-could-be-better",
+    meta: {
+        ...complexityRuleConfig.meta,
+        docs: {
+            description: "Enforce stricter FTA-based file complexity limits",
+        },
+    },
+    defaultOptions: [{ threshold: 10 }],
+});
+exports.complexityCouldBeBetter = utils_1.ESLintUtils.RuleCreator((name) => `https://example.com/rule/${name}`)({
+    ...complexityRuleConfig,
+    name: "complexity-could-be-better",
+    meta: {
+        ...complexityRuleConfig.meta,
+        docs: {
+            description: "Enforce stricter FTA-based file complexity limits",
+        },
+    },
+    defaultOptions: [{ threshold: 10 }],
 });

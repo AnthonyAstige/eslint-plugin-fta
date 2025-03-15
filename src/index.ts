@@ -1,14 +1,20 @@
-import complexity from "./rules/complexity";
+import {
+  complexityCouldBeBetter,
+  complexityNeedsImprovement,
+} from "./rules/complexity";
 
 export const rules = {
-  complexity,
+  "complexity-could-be-better": complexityCouldBeBetter,
+  "complexity-needs-improvement": complexityNeedsImprovement,
 };
 
 export const configs = {
+  // TODO: See if I need defaults in complexity.ts if I have recos here? What do they each do? At least DRY it?
   recommended: {
     plugins: ["fta"],
     rules: {
-      "fta/complexity": "warn",
+      "complexity-could-be-better": ["warn", { threshold: 50 }],
+      "complexity-needs-improvement": ["error", { threshold: 60 }],
     },
   },
 };

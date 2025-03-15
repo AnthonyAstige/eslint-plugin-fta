@@ -1,4 +1,12 @@
 import { TSESTree, ESLintUtils } from "@typescript-eslint/utils";
+import { RuleContext } from "@typescript-eslint/utils/dist/ts-eslint/Rule";
+import { RuleWithMetaAndName } from "@typescript-eslint/utils/dist/eslint-utils/RuleCreator";
+
+type ComplexityRule = RuleWithMetaAndName<
+  Options,
+  MessageIds,
+  { description: string }
+>;
 import { runFta } from "fta-cli";
 
 type Options = readonly [
@@ -11,12 +19,12 @@ const MESSAGE_IDS = {
   COMPLEXITY_ERROR: "complexityError",
 } as const;
 
+type MessageIds = (typeof MESSAGE_IDS)[keyof typeof MESSAGE_IDS];
+
 const DEFAULT_THRESHOLD = 60;
 
-export default ESLintUtils.RuleCreator(
-  (name) => `https://example.com/rule/${name}`,
-)({
-  name: "complexity",
+const complexityRuleConfig: ComplexityRule = {
+  name: "placeholder",
   meta: {
     type: "suggestion",
     docs: {
@@ -41,10 +49,16 @@ export default ESLintUtils.RuleCreator(
   },
   defaultOptions: [
     {
+      // TODO: Configure this per rule
       threshold: DEFAULT_THRESHOLD,
     },
   ],
-  create(context, [options]: Options) {
+  create(
+    context: Readonly<RuleContext<MessageIds, Options>>,
+    [options]: Options,
+  ) {
+    // const options = context.options[0];
+    console.log(options);
     const threshold = options.threshold;
     const filename = context.filename;
 
@@ -93,4 +107,32 @@ export default ESLintUtils.RuleCreator(
       },
     };
   },
+};
+
+export const complexityNeedsImprovement = ESLintUtils.RuleCreator(
+  (name) => `https://example.com/rule/${name}`,
+)<Options, MessageIds>({
+  ...complexityRuleConfig,
+  name: "complexity-could-be-better",
+  meta: {
+    ...complexityRuleConfig.meta,
+    docs: {
+      description: "Enforce stricter FTA-based file complexity limits",
+    },
+  },
+  defaultOptions: [{ threshold: 10 }],
+});
+
+export const complexityCouldBeBetter = ESLintUtils.RuleCreator(
+  (name) => `https://example.com/rule/${name}`,
+)<Options, MessageIds>({
+  ...complexityRuleConfig,
+  name: "complexity-could-be-better",
+  meta: {
+    ...complexityRuleConfig.meta,
+    docs: {
+      description: "Enforce stricter FTA-based file complexity limits",
+    },
+  },
+  defaultOptions: [{ threshold: 10 }],
 });
