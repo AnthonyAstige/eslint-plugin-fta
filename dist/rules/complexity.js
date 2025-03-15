@@ -1,11 +1,16 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.complexityNeedsImprovement = exports.complexityCouldBeBetter = void 0;
 const utils_1 = require("@typescript-eslint/utils");
 const fta_cli_1 = require("fta-cli");
+const node_path_1 = __importDefault(require("node:path"));
 const MESSAGE_IDS = {
     COMPLEXITY_ERROR: "complexityError",
 };
+let fileScores;
 const complexityRuleConfig = {
     meta: {
         type: "suggestion",
@@ -43,31 +48,34 @@ const complexityRuleConfig = {
     create(context, [options]) {
         const scoreMustBeAbove = options["when-above"];
         const scoreMustBeAtOrBelow = "when-at-or-under" in options ? options["when-at-or-under"] : undefined;
-        const filename = context.filename;
         // Skip virtual files (e.g. "<input>")
-        if (filename === "<input>") {
+        if (context.filename === "<input>") {
             return {};
         }
         return {
             "Program:exit"(node) {
                 try {
-                    /**
-                     * `runFta` has projectPath as it's first parameter, but passing it a file seems to work,
-                     * it just doesn't have the filename in the output)
-                     */
-                    const output = (0, fta_cli_1.runFta)(filename, { json: true });
-                    let results;
-                    try {
-                        results = typeof output === "string" ? JSON.parse(output) : output;
+                    // Lazy load the FTA analysis once for the entire codebase
+                    if (!fileScores) {
+                        // Note: No ESLint ignored patterns access .... so this will pickup more than we want
+                        const output = (0, fta_cli_1.runFta)(context.cwd, {
+                            json: true,
+                        });
+                        try {
+                            const results = typeof output === "string" ? JSON.parse(output) : output;
+                            fileScores = new Map(results.map((file) => [
+                                node_path_1.default.join(context.cwd, file.file_name),
+                                file.fta_score,
+                            ]));
+                        }
+                        catch {
+                            return;
+                        }
                     }
-                    catch {
+                    const score = fileScores.get(context.filename);
+                    if (score === undefined) {
                         return;
                     }
-                    const fileAnalysis = results[0];
-                    if (!fileAnalysis) {
-                        return;
-                    }
-                    const score = fileAnalysis.fta_score;
                     const meetsMinThreshold = scoreMustBeAbove === undefined || score > scoreMustBeAbove;
                     const meetsMaxThreshold = scoreMustBeAtOrBelow === undefined || score <= scoreMustBeAtOrBelow;
                     if (meetsMinThreshold && meetsMaxThreshold) {

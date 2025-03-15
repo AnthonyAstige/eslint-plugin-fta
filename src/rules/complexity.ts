@@ -7,6 +7,7 @@ type ComplexityRule = Omit<
   "defaultOptions" | "name"
 >;
 import { AnalyzedFile, runFta } from "fta-cli";
+import path from "node:path";
 
 type Options = readonly [
   | {
@@ -23,6 +24,8 @@ const MESSAGE_IDS = {
 } as const;
 
 type MessageIds = (typeof MESSAGE_IDS)[keyof typeof MESSAGE_IDS];
+
+let fileScores: Map<string, number> | undefined;
 
 const complexityRuleConfig: ComplexityRule = {
   meta: {
@@ -66,34 +69,39 @@ const complexityRuleConfig: ComplexityRule = {
     const scoreMustBeAbove: number = options["when-above"];
     const scoreMustBeAtOrBelow: number | undefined =
       "when-at-or-under" in options ? options["when-at-or-under"] : undefined;
-    const filename = context.filename;
 
     // Skip virtual files (e.g. "<input>")
-    if (filename === "<input>") {
+    if (context.filename === "<input>") {
       return {};
     }
 
     return {
       "Program:exit"(node: TSESTree.Program) {
         try {
-          /**
-           * `runFta` has projectPath as it's first parameter, but passing it a file seems to work,
-           * it just doesn't have the filename in the output)
-           */
-          const output = runFta(filename, { json: true });
-          let results: AnalyzedFile[];
-          try {
-            results = typeof output === "string" ? JSON.parse(output) : output;
-          } catch {
+          // Lazy load the FTA analysis once for the entire codebase
+          if (!fileScores) {
+            // Note: No ESLint ignored patterns access .... so this will pickup more than we want
+            const output = runFta(context.cwd, {
+              json: true,
+            });
+            try {
+              const results: AnalyzedFile[] =
+                typeof output === "string" ? JSON.parse(output) : output;
+              fileScores = new Map(
+                results.map((file) => [
+                  path.join(context.cwd, file.file_name),
+                  file.fta_score,
+                ]),
+              );
+            } catch {
+              return;
+            }
+          }
+
+          const score = fileScores.get(context.filename);
+          if (score === undefined) {
             return;
           }
-          const fileAnalysis = results[0];
-
-          if (!fileAnalysis) {
-            return;
-          }
-
-          const score = fileAnalysis.fta_score;
           const meetsMinThreshold =
             scoreMustBeAbove === undefined || score > scoreMustBeAbove;
           const meetsMaxThreshold =
