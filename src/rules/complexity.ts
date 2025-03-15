@@ -3,7 +3,7 @@ import { RuleContext } from "@typescript-eslint/utils/dist/ts-eslint/Rule";
 import { RuleWithMeta } from "@typescript-eslint/utils/dist/eslint-utils/RuleCreator";
 
 type ComplexityRule = Omit<RuleWithMeta<Options, MessageIds>, "defaultOptions">;
-import { runFta } from "fta-cli";
+import { AnalyzedFile, runFta } from "fta-cli";
 
 type Options = readonly [
   {
@@ -59,7 +59,7 @@ const complexityRuleConfig: ComplexityRule = {
            * it just doesn't have the filename in the output)
            */
           const output = runFta(filename, { json: true });
-          let results: any;
+          let results: AnalyzedFile[];
           try {
             results = typeof output === "string" ? JSON.parse(output) : output;
           } catch {
