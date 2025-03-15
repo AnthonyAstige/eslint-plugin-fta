@@ -13,9 +13,6 @@ type Options = readonly [
       "when-above": number;
     }
   | {
-      "when-at-or-under": number;
-    }
-  | {
       "when-above": number;
       "when-at-or-under": number;
     },
@@ -35,7 +32,7 @@ const complexityRuleConfig: ComplexityRule = {
     },
     messages: {
       [MESSAGE_IDS.COMPLEXITY_ERROR]:
-        "FTA complexity score ({{score}}) exceeds the maximum allowed threshold ({{threshold}}).",
+        "File has high FTA complexity score ({{score}}) which is above {{scoreMustBeAbove}}.",
     },
     schema: [
       {
@@ -66,8 +63,7 @@ const complexityRuleConfig: ComplexityRule = {
     context: Readonly<RuleContext<MessageIds, Options>>,
     [options]: Options,
   ) {
-    const scoreMustBeAbove: number | undefined =
-      "when-above" in options ? options["when-above"] : undefined;
+    const scoreMustBeAbove: number = options["when-above"];
     const scoreMustBeAtOrBelow: number | undefined =
       "when-at-or-under" in options ? options["when-at-or-under"] : undefined;
     const filename = context.filename;
@@ -114,7 +110,6 @@ const complexityRuleConfig: ComplexityRule = {
               messageId: MESSAGE_IDS.COMPLEXITY_ERROR,
               data: {
                 score: Math.round(score * 10) / 10,
-                scoreMustBeAtOrBelow,
                 scoreMustBeAbove,
               },
             });

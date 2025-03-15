@@ -3,8 +3,6 @@ type Options = readonly [
     {
         "when-above": number;
     } | {
-        "when-at-or-under": number;
-    } | {
         "when-above": number;
         "when-at-or-under": number;
     }

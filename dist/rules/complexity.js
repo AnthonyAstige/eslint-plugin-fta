@@ -13,7 +13,7 @@ const complexityRuleConfig = {
             description: "Enforce FTA-based file complexity limits",
         },
         messages: {
-            [MESSAGE_IDS.COMPLEXITY_ERROR]: "FTA complexity score ({{score}}) exceeds the maximum allowed threshold ({{threshold}}).",
+            [MESSAGE_IDS.COMPLEXITY_ERROR]: "File has high FTA complexity score ({{score}}) which is above {{scoreMustBeAbove}}.",
         },
         schema: [
             {
@@ -80,7 +80,7 @@ const complexityRuleConfig = {
                             messageId: MESSAGE_IDS.COMPLEXITY_ERROR,
                             data: {
                                 score: Math.round(score * 10) / 10,
-                                threshold: scoreMustBeAtOrBelow,
+                                scoreMustBeAbove,
                             },
                         });
                     }
