@@ -66,9 +66,9 @@ const complexityRuleConfig: ComplexityRule = {
     context: Readonly<RuleContext<MessageIds, Options>>,
     [options]: Options,
   ) {
-    const scoreMustBeAbove =
+    const scoreMustBeAbove: number | undefined =
       "when-above" in options ? options["when-above"] : undefined;
-    const scoreMustBeAtOrBelow =
+    const scoreMustBeAtOrBelow: number | undefined =
       "when-at-or-under" in options ? options["when-at-or-under"] : undefined;
     const filename = context.filename;
 
