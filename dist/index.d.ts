@@ -1,19 +1,19 @@
 export declare const rules: {
     "complexity-could-be-better": import("@typescript-eslint/utils/dist/ts-eslint").RuleModule<"complexityError", readonly [{
-        "minimum-score": number;
+        "when-above": number;
     } | {
-        "maximum-score": number;
+        "when-equal-to-or-under": number;
     } | {
-        "minimum-score": number;
-        "maximum-score": number;
+        "when-above": number;
+        "when-equal-to-or-under": number;
     }], unknown, import("@typescript-eslint/utils/dist/ts-eslint").RuleListener>;
     "complexity-needs-improvement": import("@typescript-eslint/utils/dist/ts-eslint").RuleModule<"complexityError", readonly [{
-        "minimum-score": number;
+        "when-above": number;
     } | {
-        "maximum-score": number;
+        "when-equal-to-or-under": number;
     } | {
-        "minimum-score": number;
-        "maximum-score": number;
+        "when-above": number;
+        "when-equal-to-or-under": number;
     }], unknown, import("@typescript-eslint/utils/dist/ts-eslint").RuleListener>;
 };
 export declare const configs: {
@@ -21,10 +21,10 @@ export declare const configs: {
         plugins: string[];
         rules: {
             "complexity-could-be-better": (string | {
-                "maximum-score": number;
+                "when-above": number;
             })[];
             "complexity-needs-improvement": (string | {
-                "maximum-score": number;
+                "when-above": number;
             })[];
         };
     };

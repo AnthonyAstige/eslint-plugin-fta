@@ -19,10 +19,10 @@ const complexityRuleConfig = {
             {
                 type: "object",
                 properties: {
-                    "minimum-score": {
+                    "when-above": {
                         type: "number",
                     },
-                    "maximum-score": {
+                    "when-equal-to-or-under": {
                         type: "number",
                     },
                 },
@@ -30,19 +30,21 @@ const complexityRuleConfig = {
                 anyOf: [
                     {
                         type: "object",
-                        required: ["minimum-score"],
+                        required: ["when-above"],
                     },
                     {
                         type: "object",
-                        required: ["maximum-score"],
+                        required: ["when-equal-to-or-under"],
                     },
                 ],
             },
         ],
     },
     create(context, [options]) {
-        const minScore = "minimum-score" in options ? options["minimum-score"] : undefined;
-        const maxScore = "maximum-score" in options ? options["maximum-score"] : undefined;
+        const minScore = "when-above" in options ? options["when-above"] : undefined;
+        const maxScore = "when-equal-to-or-under" in options
+            ? options["when-equal-to-or-under"]
+            : undefined;
         const filename = context.filename;
         // Skip virtual files (e.g. "<input>")
         if (filename === "<input>") {
@@ -103,7 +105,7 @@ exports.complexityCouldBeBetter = utils_1.ESLintUtils.RuleCreator((name) => `htt
             description: "Enforce stricter FTA-based file complexity limits",
         },
     },
-    defaultOptions: [{ "minimum-score": 1, "maximum-score": 30 }],
+    defaultOptions: [{ "when-above": 1, "when-equal-to-or-under": 30 }],
 });
 exports.complexityNeedsImprovement = utils_1.ESLintUtils.RuleCreator((name) => `https://example.com/rule/${name}`)({
     ...complexityRuleConfig,
@@ -114,5 +116,5 @@ exports.complexityNeedsImprovement = utils_1.ESLintUtils.RuleCreator((name) => `
             description: "Enforce stricter FTA-based file complexity limits",
         },
     },
-    defaultOptions: [{ "minimum-score": 30 }],
+    defaultOptions: [{ "when-above": 30 }],
 });

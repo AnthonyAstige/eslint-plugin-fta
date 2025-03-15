@@ -7,14 +7,14 @@ import { AnalyzedFile, runFta } from "fta-cli";
 
 type Options = readonly [
   | {
-      "minimum-score": number;
+      "when-above": number;
     }
   | {
-      "maximum-score": number;
+      "when-equal-to-or-under": number;
     }
   | {
-      "minimum-score": number;
-      "maximum-score": number;
+      "when-above": number;
+      "when-equal-to-or-under": number;
     },
 ];
 
@@ -38,10 +38,10 @@ const complexityRuleConfig: ComplexityRule = {
       {
         type: "object",
         properties: {
-          "minimum-score": {
+          "when-above": {
             type: "number",
           },
-          "maximum-score": {
+          "when-equal-to-or-under": {
             type: "number",
           },
         },
@@ -49,11 +49,11 @@ const complexityRuleConfig: ComplexityRule = {
         anyOf: [
           {
             type: "object",
-            required: ["minimum-score"],
+            required: ["when-above"],
           },
           {
             type: "object",
-            required: ["maximum-score"],
+            required: ["when-equal-to-or-under"],
           },
         ],
       },
@@ -64,9 +64,11 @@ const complexityRuleConfig: ComplexityRule = {
     [options]: Options,
   ) {
     const minScore =
-      "minimum-score" in options ? options["minimum-score"] : undefined;
+      "when-above" in options ? options["when-above"] : undefined;
     const maxScore =
-      "maximum-score" in options ? options["maximum-score"] : undefined;
+      "when-equal-to-or-under" in options
+        ? options["when-equal-to-or-under"]
+        : undefined;
     const filename = context.filename;
 
     // Skip virtual files (e.g. "<input>")
@@ -96,10 +98,10 @@ const complexityRuleConfig: ComplexityRule = {
 
           const score = fileAnalysis.fta_score;
           // Report if score is below minimum or above maximum
-          const isBelowMin = minScore !== undefined && score < minScore;
-          const isAboveMax = maxScore !== undefined && score > maxScore;
+          const isAbove = minScore !== undefined && score > minScore;
+          const isEqualToOrBelow = maxScore !== undefined && score <= maxScore;
 
-          if (isBelowMin || isAboveMax) {
+          if (isAbove || isEqualToOrBelow) {
             const firstToken = context.sourceCode.getFirstToken(node);
             if (!firstToken) {
               return;
@@ -134,7 +136,7 @@ export const complexityCouldBeBetter = ESLintUtils.RuleCreator(
       description: "Enforce stricter FTA-based file complexity limits",
     },
   },
-  defaultOptions: [{ "minimum-score": 1, "maximum-score": 30 }],
+  defaultOptions: [{ "when-above": 1, "when-equal-to-or-under": 30 }],
 });
 
 export const complexityNeedsImprovement = ESLintUtils.RuleCreator(
@@ -148,5 +150,5 @@ export const complexityNeedsImprovement = ESLintUtils.RuleCreator(
       description: "Enforce stricter FTA-based file complexity limits",
     },
   },
-  defaultOptions: [{ "minimum-score": 30 }],
+  defaultOptions: [{ "when-above": 30 }],
 });

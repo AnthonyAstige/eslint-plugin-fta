@@ -11,8 +11,8 @@ exports.configs = {
     recommended: {
         plugins: ["fta"],
         rules: {
-            "complexity-could-be-better": ["warn", { "maximum-score": 50 }],
-            "complexity-needs-improvement": ["error", { "maximum-score": 60 }],
+            "complexity-could-be-better": ["warn", { "when-above": 50 }],
+            "complexity-needs-improvement": ["error", { "when-above": 60 }],
         },
     },
 };
